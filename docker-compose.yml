@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  abf3:
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command:
+      - ./abf3
+    ports:
+      - 8081:8081
