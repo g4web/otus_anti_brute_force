@@ -1,0 +1,11 @@
+FROM golang:1.18.5
+
+ENV GOPATH=/
+
+COPY ./ ./
+
+RUN go mod download
+
+RUN go build -o ./abf-server ./cmd/server/main.go
+
+CMD ["./abf-server"]

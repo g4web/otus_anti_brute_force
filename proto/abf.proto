@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package event;
+
+option go_package = "./;proto";
+
+service AntiBruteForce {
+  rpc IsOk (UserRequest) returns (UserResponse) {}
+  rpc DeleteLoginStats (DeleteLoginStatsRequest) returns (BaseResponse) {}
+  rpc DeleteIPStats (DeleteIPStatsRequest) returns (BaseResponse) {}
+
+  rpc AddNetworkToWhiteList (AddNetworkToWhiteListRequest) returns (BaseResponse) {}
+  rpc AddNetworkToBlackList (AddNetworkToBlackListRequest) returns (BaseResponse) {}
+  rpc RemoveNetworkFromWhiteList (RemoveNetworkFromWhiteListRequest) returns (BaseResponse) {}
+  rpc RemoveNetworkFromBlackList (RemoveNetworkFromBlackListRequest) returns (BaseResponse) {}
+
+}
+
+message BaseResponse {
+  bool IsSuccess = 1;
+}
+
+message UserRequest {
+  string Login = 2;
+  string Password = 3;
+  string IP = 5;
+}
+
+message UserResponse {
+  bool IsOk = 1;
+}
+
+message DeleteLoginStatsRequest {
+  string Login = 1;
+}
+
+message DeleteIPStatsRequest {
+  string IP = 1;
+}
+
+message AddNetworkToWhiteListRequest {
+  string Network = 1;
+}
+
+message AddNetworkToBlackListRequest {
+  string Network = 1;
+}
+
+message RemoveNetworkFromWhiteListRequest {
+  string Network = 1;
+}
+
+message RemoveNetworkFromBlackListRequest {
+  string Network = 1;
+}
