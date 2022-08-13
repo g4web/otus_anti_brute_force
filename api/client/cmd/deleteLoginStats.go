@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/g4web/otus_anti_brute_force/proto"
+	"github.com/g4web/otus_anti_brute_force/api/proto"
 	"github.com/spf13/cobra"
 )
 

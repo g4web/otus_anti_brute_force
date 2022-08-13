@@ -2,10 +2,10 @@ FROM golang:1.18.5
 
 ENV GOPATH=/
 
-COPY ./ ./
+COPY .. ./
 
 RUN go mod download
 
-RUN go build -o ./abf-server ./cmd/server/main.go
+RUN go build -o ./abf-server ./api/server/
 
 CMD ["./abf-server"]

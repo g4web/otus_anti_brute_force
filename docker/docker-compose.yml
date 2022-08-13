@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  server:
+    build:
+      context: ..
+      dockerfile: ./docker/DockerfileServer
+    ports:
+      - "9993:9993"
+  client:
+    build:
+      context: ..
+      dockerfile: ./docker/DockerfileClient

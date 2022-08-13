@@ -10,7 +10,6 @@ import (
 
 	"github.com/g4web/otus_anti_brute_force/configs"
 	app "github.com/g4web/otus_anti_brute_force/internal"
-	"github.com/g4web/otus_anti_brute_force/server"
 )
 
 var configFile string
@@ -29,7 +28,7 @@ func main() {
 	defer cancel()
 	application := app.NewApp(ctx, config)
 
-	grpc := server.NewServer(application, config)
+	grpc := NewABFServer(application, config)
 	defer func() {
 		_ = grpc.Stop(ctx)
 	}()

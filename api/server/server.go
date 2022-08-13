@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/g4web/otus_anti_brute_force/api/proto"
 	"github.com/g4web/otus_anti_brute_force/configs"
 	"github.com/g4web/otus_anti_brute_force/internal"
-	"github.com/g4web/otus_anti_brute_force/proto"
 	"google.golang.org/grpc"
 )
 
@@ -21,7 +21,7 @@ type ABFServer struct {
 	proto.UnimplementedAntiBruteForceServer
 }
 
-func NewServer(app *app.App, config *configs.Config) *ABFServer {
+func NewABFServer(app *app.App, config *configs.Config) *ABFServer {
 	grpcServer := grpc.NewServer()
 	ABFServer := &ABFServer{
 		app:        app,

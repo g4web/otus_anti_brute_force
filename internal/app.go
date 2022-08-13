@@ -19,20 +19,7 @@ func NewApp(ctx context.Context, cfg *configs.Config) *App {
 	passwordBuckets := bucket.NewStringBuckets(cfg.PasswordTimeLimit, cfg.PasswordMaxCountForTimeLimit)
 	ipBuckets := bucket.NewIPBuckets(cfg.IPTimeLimit, cfg.IPMaxCountForTimeLimit)
 
-	ticker := time.NewTicker(cfg.CleanUpPeriod)
-
-	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case <-ticker.C:
-				loginBuckets.DeleteGarbage()
-				passwordBuckets.DeleteGarbage()
-				ipBuckets.DeleteGarbage()
-			}
-		}
-	}()
+	garbageCleanerStart(ctx, cfg, loginBuckets, passwordBuckets, ipBuckets)
 
 	return &App{
 		loginBuckets:    loginBuckets,
@@ -82,4 +69,26 @@ func (u *App) RemoveNetworkFromWhiteList(rawNetwork string) error {
 
 func (u *App) RemoveNetworkFromBlackList(rawNetwork string) error {
 	return u.ipBuckets.RemoveBlackListNetwork(rawNetwork)
+}
+
+func garbageCleanerStart(
+	ctx context.Context,
+	cfg *configs.Config,
+	loginBuckets *bucket.StringBuckets,
+	passwordBuckets *bucket.StringBuckets, ipBuckets *bucket.IPBuckets,
+) {
+	ticker := time.NewTicker(cfg.CleanUpPeriod)
+
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-ticker.C:
+				loginBuckets.DeleteGarbage()
+				passwordBuckets.DeleteGarbage()
+				ipBuckets.DeleteGarbage()
+			}
+		}
+	}()
 }

@@ -7,8 +7,8 @@ import (
 	"net"
 	"os"
 
+	"github.com/g4web/otus_anti_brute_force/api/proto"
 	"github.com/g4web/otus_anti_brute_force/configs"
-	"github.com/g4web/otus_anti_brute_force/proto"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

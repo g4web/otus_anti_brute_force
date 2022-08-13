@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/g4web/otus_anti_brute_force/api/proto"
 	"github.com/g4web/otus_anti_brute_force/configs"
 	app "github.com/g4web/otus_anti_brute_force/internal"
-	"github.com/g4web/otus_anti_brute_force/proto"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -25,19 +25,19 @@ var (
 )
 
 func init() {
-	config, err := configs.NewConfig("../configs/config_test.env")
+	config, err := configs.NewConfig("../../configs/config_test.env")
 	if err != nil {
-		fmt.Println("error reading config:", err)
+		log.Fatalf("error reading config: %v", err)
 	}
 
 	ctx, cancel = context.WithCancel(context.Background())
 	application := app.NewApp(ctx, config)
 
-	grpcServer = NewServer(application, config)
+	grpcServer = NewABFServer(application, config)
 	go func() {
 		err = grpcServer.Start(ctx)
 		if err != nil {
-			log.Fatalf("error reading config: %v", err)
+			log.Fatalf("error server start: %v", err)
 		}
 	}()
 

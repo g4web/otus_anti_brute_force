@@ -2,11 +2,11 @@ rest: down up
 up: run
 down: stop
 run:
-	docker-compose -f ./docker-compose.yml up -d
+	docker-compose -f ./docker/docker-compose.yml up -d
 stop:
-	docker-compose -f ./docker-compose.yml down --remove-orphans
-rebuild:
-	docker-compose -f ./docker-compose.yml up -d --build
+	docker-compose -f ./docker/docker-compose.yml down --remove-orphans
+build:
+	docker-compose -f ./docker/docker-compose.yml up -d --build
 test:
 	go test -race ./...
 lint:
@@ -22,4 +22,4 @@ generate:
 # For see all commands use `make cli`.
 # Help for command `make cli command=help args=addNetworkToBlacklist`.
 cli:
-	docker-compose -f ./docker-compose.yml exec client ./abf-client $(command) $(args)
+	docker-compose -f ./docker/docker-compose.yml exec client ./abf-client $(command) $(args)
