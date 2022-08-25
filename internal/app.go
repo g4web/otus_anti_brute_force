@@ -4,8 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/g4web/otus_anti_brute_force/configs"
 	"github.com/g4web/otus_anti_brute_force/internal/bucket"
+	"github.com/g4web/otus_anti_brute_force/internal/config"
+	"github.com/g4web/otus_anti_brute_force/internal/storage"
 )
 
 type App struct {
@@ -14,10 +15,20 @@ type App struct {
 	ipBuckets       *bucket.IPBuckets
 }
 
-func NewApp(ctx context.Context, cfg *configs.Config) *App {
+func NewApp(
+	ctx context.Context,
+	cfg *config.Config,
+	networkPersistentStorage storage.NetworkStorage,
+	networkFastStorage storage.NetworkStorage,
+) *App {
 	loginBuckets := bucket.NewStringBuckets(cfg.LoginTimeLimit, cfg.LoginMaxCountForTimeLimit)
 	passwordBuckets := bucket.NewStringBuckets(cfg.PasswordTimeLimit, cfg.PasswordMaxCountForTimeLimit)
-	ipBuckets := bucket.NewIPBuckets(cfg.IPTimeLimit, cfg.IPMaxCountForTimeLimit)
+	ipBuckets := bucket.NewIPBuckets(
+		cfg.IPTimeLimit,
+		cfg.IPMaxCountForTimeLimit,
+		networkPersistentStorage,
+		networkFastStorage,
+	)
 
 	garbageCleanerStart(ctx, cfg, loginBuckets, passwordBuckets, ipBuckets)
 
@@ -73,7 +84,7 @@ func (u *App) RemoveNetworkFromBlackList(rawNetwork string) error {
 
 func garbageCleanerStart(
 	ctx context.Context,
-	cfg *configs.Config,
+	cfg *config.Config,
 	loginBuckets *bucket.StringBuckets,
 	passwordBuckets *bucket.StringBuckets, ipBuckets *bucket.IPBuckets,
 ) {

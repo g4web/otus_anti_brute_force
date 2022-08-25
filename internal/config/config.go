@@ -1,4 +1,4 @@
-package configs
+package config
 
 import (
 	"log"
@@ -17,6 +17,11 @@ type configMap struct {
 	GrpcHost                     string `mapstructure:"GRPC_HOST"`
 	GrpcPort                     string `mapstructure:"GRPC_PORT"`
 	CleanupPeriod                string `mapstructure:"CLEANUP_PERIOD"`
+	DBHost                       string `mapstructure:"DB_HOST"`
+	DBPort                       string `mapstructure:"DB_PORT"`
+	DBName                       string `mapstructure:"DB_NAME"`
+	DBUser                       string `mapstructure:"DB_USER"`
+	DBPassword                   string `mapstructure:"DB_PASSWORD"`
 }
 
 type Config struct {
@@ -29,6 +34,11 @@ type Config struct {
 	GrpcHost                     string
 	GrpcPort                     string
 	CleanUpPeriod                time.Duration
+	DBHost                       string
+	DBPort                       string
+	DBName                       string
+	DBUser                       string
+	DBPassword                   string
 }
 
 func NewConfig(filePath string) (*Config, error) {
@@ -75,5 +85,10 @@ func NewConfig(filePath string) (*Config, error) {
 		conf.GrpcHost,
 		conf.GrpcPort,
 		CleanUpPeriod,
+		conf.DBHost,
+		conf.DBPort,
+		conf.DBName,
+		conf.DBUser,
+		conf.DBPassword,
 	}, nil
 }

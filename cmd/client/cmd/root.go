@@ -7,8 +7,8 @@ import (
 	"net"
 	"os"
 
-	"github.com/g4web/otus_anti_brute_force/api/proto"
-	"github.com/g4web/otus_anti_brute_force/configs"
+	"github.com/g4web/otus_anti_brute_force/internal/config"
+	"github.com/g4web/otus_anti_brute_force/internal/proto"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -49,13 +49,13 @@ func init() {
 }
 
 func startGrpcClient() {
-	config, err := configs.NewConfig(configFile)
+	configs, err := config.NewConfig(configFile)
 	if err != nil {
-		log.Fatal("error reading config:", err)
+		log.Fatal("error reading configs:", err)
 	}
 
 	conn, err = grpc.Dial(
-		net.JoinHostPort(config.GrpcHost, config.GrpcPort),
+		net.JoinHostPort(configs.GrpcHost, configs.GrpcPort),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {

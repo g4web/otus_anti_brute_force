@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"context"
@@ -6,22 +6,21 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"os"
 
-	"github.com/g4web/otus_anti_brute_force/api/proto"
-	"github.com/g4web/otus_anti_brute_force/configs"
 	"github.com/g4web/otus_anti_brute_force/internal"
+	"github.com/g4web/otus_anti_brute_force/internal/config"
+	"github.com/g4web/otus_anti_brute_force/internal/proto"
 	"google.golang.org/grpc"
 )
 
 type ABFServer struct {
 	app        *app.App
 	grpcServer *grpc.Server
-	config     *configs.Config
+	config     *config.Config
 	proto.UnimplementedAntiBruteForceServer
 }
 
-func NewABFServer(app *app.App, config *configs.Config) *ABFServer {
+func NewABFServer(app *app.App, config *config.Config) *ABFServer {
 	grpcServer := grpc.NewServer()
 	ABFServer := &ABFServer{
 		app:        app,
@@ -37,11 +36,12 @@ func (a *ABFServer) Start(ctx context.Context) error {
 	lsn, err := net.Listen("tcp", net.JoinHostPort(a.config.GrpcHost, a.config.GrpcPort))
 	if err != nil {
 		log.Fatalf("Fail start gprc server: %v", err)
+		return err
 	}
 
 	if err := a.grpcServer.Serve(lsn); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		log.Fatalf("Fail start gprc server: %v", err)
-		os.Exit(1)
+		return err
 	}
 
 	<-ctx.Done()

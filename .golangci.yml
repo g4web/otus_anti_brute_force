@@ -11,7 +11,7 @@ linters:
   enable:
     - asciicheck
     #deprecated    - bodyclose
-    - deadcode
+    #deprecated    - deadcode
     - depguard
     - dogsled
     - dupl
@@ -60,6 +60,6 @@ linters:
     - unconvert
     #deprecated    - unparam
     - unused
-    - varcheck
+    #deprecated    - varcheck
     #deprecated    - wastedassign
     - whitespace

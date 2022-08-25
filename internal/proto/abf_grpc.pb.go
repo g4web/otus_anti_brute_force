@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.6.1
-// source: abf.proto
+// source: api/abf.proto
 
 package proto
 
@@ -317,5 +317,5 @@ var AntiBruteForce_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "abf.proto",
+	Metadata: "api/abf.proto",
 }

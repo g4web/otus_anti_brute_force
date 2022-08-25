@@ -6,6 +6,6 @@ COPY .. ./
 
 RUN go mod download
 
-RUN go build -o ./abf-server ./api/server/
+RUN go build -o ./abf-server ./cmd/server/
 
 CMD ["./abf-server"]

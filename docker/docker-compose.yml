@@ -1,13 +1,28 @@
 version: "3.9"
 
 services:
+  pg:
+    image: postgres
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      PGDATA: ./postgresql/data/pgdata
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
   server:
     build:
       context: ..
       dockerfile: ./docker/DockerfileServer
     ports:
       - "9993:9993"
+    depends_on:
+      - pg
   client:
     build:
       context: ..
       dockerfile: ./docker/DockerfileClient
+    depends_on:
+      - pg

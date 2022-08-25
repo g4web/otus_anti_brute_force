@@ -6,6 +6,6 @@ COPY .. ./
 
 RUN go mod download
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./abf-client ./api/client/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./abf-client ./cmd/client/
 
 CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
