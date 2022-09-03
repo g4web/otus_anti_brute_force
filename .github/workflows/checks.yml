@@ -15,5 +15,5 @@ jobs:
       - run: go mod tidy
       - run: |
           cp -n ${{ github.workspace }}/configs/config_example.env ${{ github.workspace }}/configs/config.env
-      - run: make test
+      - run: make unit-tests
       - run: make lint

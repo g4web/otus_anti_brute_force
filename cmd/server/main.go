@@ -26,13 +26,14 @@ func main() {
 	if err != nil {
 		log.Fatalf("error reading configs: %v", err)
 	}
-	networkPersistentStorage, err := sqlstorage.NewSQLStorage(configs)
+
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+	networkPersistentStorage, err := sqlstorage.NewSQLStorage(ctx, configs)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
+
 	networkFastStorage := memorystorage.NewMemoryStorage()
 
 	application := app.NewApp(ctx, configs, networkFastStorage, networkPersistentStorage)

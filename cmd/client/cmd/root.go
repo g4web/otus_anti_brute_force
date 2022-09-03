@@ -43,7 +43,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(
 		&configFile,
 		"c",
-		"./configs/config.env",
+		"/abf/configs/config.env",
 		"A path to config file",
 	)
 }

@@ -24,11 +24,11 @@ type SQLStorage struct {
 	ctx context.Context
 }
 
-func NewSQLStorage(c *config.Config) (*SQLStorage, error) {
-	dsn := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", c.DBUser, c.DBPassword, c.DBName)
+func NewSQLStorage(ctx context.Context, c *config.Config) (*SQLStorage, error) {
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", c.DBHost, c.DBUser, c.DBPassword, c.DBName)
 
 	s := &SQLStorage{}
-	err := s.connect(context.Background(), dsn)
+	err := s.connect(ctx, dsn)
 	if err != nil {
 		return nil, err
 	}
@@ -137,8 +137,7 @@ func (s *SQLStorage) selectRows(networkType string) (map[string]*net.IPNet, erro
 	networks := make(map[string]*net.IPNet)
 	sqlQuery := `
 		SELECT
-		 network,
-		 type
+		 network
 		FROM
 		  network
 		WHERE

@@ -14,13 +14,13 @@ func TestApp(t *testing.T) {
 	t.Run("Test request", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
-		config, err := config.NewConfig("../configs/config_test.env")
+		configs, err := config.NewConfig("../configs/config_test.env")
 		if err != nil {
-			log.Fatalf("error reading config: %v", err)
+			log.Fatalf("error reading configs: %v", err)
 		}
 		networkPersistentStorage := memorystorage.NewMemoryStorage()
 		networkFastStorage := memorystorage.NewMemoryStorage()
-		app := NewApp(ctx, config, networkPersistentStorage, networkFastStorage)
+		app := NewApp(ctx, configs, networkPersistentStorage, networkFastStorage)
 
 		isOk, err := app.IsOk("192.168.0.1", "-=@wesomeNikN@me=-", "gfhjkm")
 		require.NoError(t, err)
