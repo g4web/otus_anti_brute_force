@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  pg:
+    image: postgres
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      PGDATA: ./postgresql/data/pgdata
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+  migration:
+    build:
+      context: ..
+      dockerfile: ./docker/DockerfileMigration
+    volumes:
+      - ../:/abf
+    depends_on:
+      - pg
+    command: /go/bin/goose postgres "postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable"  up
+  server:
+    build:
+      context: ..
+      dockerfile: ./docker/DockerfileServer
+    volumes:
+      - ../:/abf
+    ports:
+      - "9993:9993"
+    depends_on:
+      - pg
+    command: /abf/bin/server --config=/abf/configs/config.env
+  client:
+    build:
+      context: ..
+      dockerfile: ./docker/DockerfileClient
+    volumes:
+      - ../:/abf
+    depends_on:
+      - pg

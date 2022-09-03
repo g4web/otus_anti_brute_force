@@ -1,0 +1,3 @@
+FROM golang:1.18.5
+
+CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
